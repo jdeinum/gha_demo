@@ -44,11 +44,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ghcr.io/${{ steps.vars.outputs.owner }}/${{ github.event.repository.name }}:${{ steps.tag.outputs.IMAGE_TAG }}
+          provenance: mode=max
           cache-from: type=registry,ref=ghcr.io/${{ steps.vars.outputs.owner }}/${{ github.event.repository.name }}:latest
           cache-to: type=inline
           file: ./chef.debian.dockerfile
+          sbom: true
+          tags: ${{ steps.meta.outputs.tags }}
