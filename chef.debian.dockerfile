@@ -1,6 +1,3 @@
-# Define a build-time variable for the binary name
-ARG BINARY_NAME=gha_demo
-
 # Use Rust image for building
 FROM lukemathwalker/cargo-chef:latest-rust-1.85.1 as chef
 WORKDIR /app
@@ -13,28 +10,31 @@ RUN cargo chef prepare --recipe-path recipe.json
 
 # build deps
 FROM chef AS builder
-ARG BINARY_NAME
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 
 # build our code
 COPY . .
-RUN cargo build --release --bin ${BINARY_NAME}
+RUN cargo build --release
 
 # final runtime image
 FROM debian:bookworm-slim AS runtime
 WORKDIR /app
-ARG BINARY_NAME
 ENV APP_ENV=production
 RUN apt-get update -y \
   && apt-get install -y --no-install-recommends openssl ca-certificates \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/release/${BINARY_NAME} ${BINARY_NAME}
+COPY --from=builder /app/target/release/gha_demo app
+
+# just for convienence, but you should really consider using either docker
+# volumes (comopose) or ConfigMaps (kubernetes) for deployments.
 COPY configuration configuration
+
+# need access to migrations when we start
 COPY migrations migrations
 
 # run
-ENTRYPOINT ["./${BINARY_NAME}"]
+ENTRYPOINT ["./app]
 
