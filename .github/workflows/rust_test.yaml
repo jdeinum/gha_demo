@@ -29,9 +29,29 @@ jobs:
   required:
     runs-on: ubuntu-latest
     name: ubuntu / ${{ matrix.toolchain }}
+
+    # what toolchains will we be using
     strategy:
       matrix:
         toolchain: [stable]
+
+    # any external services we require
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+      # redis:
+      #   image: redis
+      #   ports:
+      #     - "6379:6379"
+      #   env:
+      #     REDIS_ARGS: "--requirepass password"
+
+    # the steps for our workflow
     steps:
       # checkout our codebase
       - uses: actions/checkout@v5
