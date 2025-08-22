@@ -57,5 +57,5 @@ jobs:
           provenance: mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}_alpine:buildcache,mode=max
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}_alpine:buildcache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
