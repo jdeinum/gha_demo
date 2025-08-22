@@ -1,3 +1,5 @@
+# from jonhoo, thanks!
+# https://github.com/jonhoo
 coverage:
   # Hold ourselves to a high bar
   range: 85..100
