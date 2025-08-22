@@ -1,5 +1,6 @@
 use crate::error::Result;
 use crate::routes::health::health;
+use crate::routes::latency::latency;
 use crate::routes::v1::router::get_v1_router;
 use crate::settings::Settings;
 use anyhow::Context;
@@ -11,7 +12,6 @@ use sqlx::PgPool;
 use tokio::net::TcpListener;
 use tokio::signal::unix::{SignalKind, signal};
 use tracing::info;
-use crate::routes::latency::latency;
 
 pub struct App {
     router: axum::Router,

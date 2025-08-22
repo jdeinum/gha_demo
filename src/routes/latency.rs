@@ -12,4 +12,3 @@ pub async fn latency(State(mut app_state): State<AppState>) -> Result<StatusCode
 
     Ok(StatusCode::OK)
 }
-
