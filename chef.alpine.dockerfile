@@ -15,7 +15,7 @@ RUN cargo chef cook --release --target x86_64-unknown-linux-musl --recipe-path r
 
 # build our code
 COPY . .
-RUN cargo build --release --target x86_64-unknown-linux-musl --bin app
+RUN cargo build --release --target x86_64-unknown-linux-musl --bin gha_demo
 
 # runtime image
 FROM alpine AS runtime
