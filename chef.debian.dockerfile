@@ -1,5 +1,5 @@
 # Define a build-time variable for the binary name
-ARG BINARY_NAME=api
+ARG BINARY_NAME=gha_demo
 
 # Use Rust image for building
 FROM lukemathwalker/cargo-chef:latest-rust-1.85.1 as chef
@@ -7,12 +7,12 @@ WORKDIR /app
 RUN apt update
 
 # create our recipe
-FROM chef as planner
+FROM chef AS planner
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
 # build deps
-FROM chef as builder
+FROM chef AS builder
 ARG BINARY_NAME
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
