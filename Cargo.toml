@@ -1,0 +1,25 @@
+[package]
+name = "gha_demo"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.99"
+axum = { version = "0.8.4", features = ["json"] }
+config = "0.15.14"
+secrecy = { version = "0.10.3", features = ["serde"] }
+serde = "1.0.219"
+serde-aux = "4.7.0"
+sqlx = { version = "0.8.6", features = ["chrono", "postgres", "runtime-tokio", "uuid"] }
+strum = { version = "0.27.2", features = ["strum_macros"] }
+strum_macros = "0.27.2"
+thiserror = "2.0.16"
+tokio = { version = "1.47.1", features = ["full"] }
+tower-http = { version = "0.6.6", features = ["trace"] }
+tracing = "0.1.41"
+tracing-log = "0.2.0"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+uuid = { version = "1.18.0", features = ["v4", "serde"] }
+
+[dev-dependencies]
+reqwest = { version = "0.12.23", features = ["json"] }

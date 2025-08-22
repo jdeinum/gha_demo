@@ -1,0 +1,4 @@
+application:
+  host: "localhost"
+db:
+  host: "localhost"
