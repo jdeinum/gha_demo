@@ -44,7 +44,7 @@ jobs:
             type=semver,pattern=alpine-v{{version}}
             type=semver,pattern=alpine-v{{major}}.{{minor}}
             type=semver,pattern=alpine-v{{major}}
-            type=sha,format=alpine-sha-{{sha}}
+            type=raw,value=alpine-sha-${{ github.sha }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
