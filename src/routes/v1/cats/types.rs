@@ -1,10 +1,9 @@
 use crate::error::Result;
 use serde::{Deserialize, Serialize};
 use sqlx::prelude::FromRow;
-use strum_macros::EnumString;
 use uuid::Uuid;
 
-#[derive(sqlx::Type, Serialize, Deserialize, Debug, EnumString, PartialEq, Eq)]
+#[derive(sqlx::Type, Serialize, Deserialize, Debug, PartialEq, Eq)]
 #[sqlx(type_name = "eye_color")]
 pub enum EyeColor {
     Blue,
