@@ -1,4 +1,8 @@
+# scan our codebase for unmaintained crates, unvalid licenses, etc
+# uses the deny.toml file in the root directory of our rust project
 name: audit
+
+# only run when our dependencies change, or weekly on sunday
 on:
   schedule:
     - cron: "0 0 * * 0"
@@ -10,7 +14,16 @@ jobs:
   security_audit:
     runs-on: ubuntu-latest
     steps:
+      # check out our codebase
       - uses: actions/checkout@v5
+
+      # activate our cache
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2.8.0
+
+      # install cargo deny
       - uses: taiki-e/install-action@cargo-deny
+
+      # scan for issues
       - name: Scan for vulnerabilities
         run: cargo deny check advisories

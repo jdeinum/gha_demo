@@ -1,3 +1,7 @@
+[![Tests](https://github.com/jdeinum/gha_demo/workflows/test/badge.svg)](https://github.com/jdeinum/gha_demo/actions)
+[![Check](https://github.com/jdeinum/gha_demo/workflows/check/badge.svg)](https://github.com/jdeinum/gha_demo/actions)
+[![Audit](https://github.com/jdeinum/gha_demo/workflows/audit/badge.svg)](https://github.com/jdeinum/gha_demo/actions)
+
 # GHA Demo 
 
 This repository is just meant to be used to test github actions workflows. It
