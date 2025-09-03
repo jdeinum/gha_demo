@@ -1,3 +1,6 @@
+# Define a build-time variable for the binary name
+ARG BINARY_NAME=api
+
 # Use Rust image for building
 FROM lukemathwalker/cargo-chef:latest-rust-1.85.1 as chef
 WORKDIR /app
@@ -15,7 +18,7 @@ RUN cargo chef cook --release --recipe-path recipe.json
 
 # build our code
 COPY . .
-RUN cargo build --release
+RUN cargo build --release --bin
 
 # final runtime image
 FROM debian:bookworm-slim AS runtime
@@ -26,7 +29,7 @@ RUN apt-get update -y \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/release/gha_demo app
+COPY --from=builder /app/target/release/app app
 
 # just for convienence, but you should really consider using either docker
 # volumes (comopose) or ConfigMaps (kubernetes) for deployments.
