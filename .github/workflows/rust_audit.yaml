@@ -19,7 +19,7 @@ jobs:
 
       # activate our cache
       - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.8.0
+        uses: Swatinem/rust-cache@v2.8.1
 
       # install cargo deny
       - uses: taiki-e/install-action@cargo-deny

@@ -60,7 +60,7 @@ jobs:
 
       # caches dependencies and tools
       - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.8.0
+        uses: Swatinem/rust-cache@v2.8.1
 
       # install the correct toolchain
       - name: Install ${{ matrix.toolchain }}
