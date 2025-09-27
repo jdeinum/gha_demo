@@ -1,0 +1,64 @@
+# scan our codebase for unmaintained crates, unvalid licenses, etc
+# uses the deny.toml file in the root directory of our rust project
+name: trivy
+
+# only run when our dependencies change, or weekly on sunday
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        description: "Container image name to scan"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  security-events: write
+  packages: read
+  actions: read
+
+jobs:
+  vuln:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # costs money, shame
+      # - name: Run Trivy vulnerability scanner in repo mode
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     scan-type: "fs"
+      #     ignore-unfixed: true
+      #     format: "sarif"
+      #     output: "trivy-fs.sarif"
+      #     severity: "CRITICAL,HIGH"
+
+      - name: Run Trivy vulnerability scanner (image)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "${{ inputs.image-name }}"
+          format: "sarif"
+          output: "trivy-image.sarif"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+
+      # - name: Upload Trivy FS SARIF
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   with:
+      #     sarif_file: "trivy-fs.sarif"
+      #     category: "trivy-fs"
+
+      - name: Upload Trivy Image SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-image.sarif"
+          category: "trivy-image"

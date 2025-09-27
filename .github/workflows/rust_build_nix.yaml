@@ -1,5 +1,5 @@
-# Build our app using chef with debian as its final image
-name: build_debian_chef
+# Build our app using chef with alpine as its final image
+name: build_alpine_chef
 
 permissions:
   contents: read
@@ -14,9 +14,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    outputs:
-      image-name: ${{ steps.vars.outputs.image_name }}
-      image-tag: ${{ steps.meta.outputs.version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -30,8 +27,10 @@ jobs:
 
       - name: Set up lowercase owner
         id: vars
-        run: |
-          echo "image_name=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+        run: echo "owner=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      - name: Set image name
+        run: echo "IMAGE_NAME=ghcr.io/${{ steps.vars.outputs.owner }}/${{ github.event.repository.name }}-alpine" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -40,7 +39,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.vars.outputs.image_name }}
+          images: ${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -52,23 +51,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./chef.debian.dockerfile
+          file: ./nix.dockerfile
           push: true
           sbom: true
           provenance: mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-to: type=registry,ref=${{ steps.vars.outputs.image_name }}:buildcache,mode=max
-          cache-from: type=registry,ref=${{ steps.vars.outputs.image_name }}:buildcache
-
-  # if you have code scanning enabled
-  # security-scan:
-  #   needs: docker
-  #   uses: ./.github/workflows/trivy.yaml
-  #   permissions:
-  #     contents: read
-  #     security-events: write
-  #     packages: read
-  #     actions: read
-  #   with:
-  #     image-name: ${{ needs.docker.outputs.image-name }}:${{ needs.docker.outputs.image-tag }}
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}_nix:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}_nix:buildcache

@@ -1,14 +1,41 @@
-[![Tests](https://github.com/jdeinum/gha_demo/workflows/test/badge.svg)](https://github.com/jdeinum/gha_demo/actions)
-[![Check](https://github.com/jdeinum/gha_demo/workflows/check/badge.svg)](https://github.com/jdeinum/gha_demo/actions)
-[![Audit](https://github.com/jdeinum/gha_demo/workflows/audit/badge.svg)](https://github.com/jdeinum/gha_demo/actions)
+# Rust CI 
 
-# GHA Demo 
+To add CI to your project, first run these general commands:
 
-This repository is just meant to be used to test github actions workflows. It
-consists of a simple API, with some tests and benchmarks. I am doing a small
-write up of workflows for Rust (and other cloud tooling) over at [Code To
-Cloud](https://github.com/codetocloudorg/platform-engineering).
+```bash
+git remote add ci git@github.com:jdeinum/rust_ci.git # switch to http
+git fetch --all
+```
 
-If you just want the files, I'll be porting them over to
-[this](https://github.com/jdeinum/rust_ci) repo so you can just merge / checkout
-the ones you want.
+Then run the commands for the version you want to use.
+
+## Debian
+
+```bash
+git checkout ci/master chef.debian.dockerfile
+git checkout ci/master .github/workflows/rust_build_debian_chef.yaml
+```
+
+## Alpine
+
+```bash
+git checkout ci/master chef.alpine.dockerfile
+git checkout ci/master .github/workflows/rust_build_alpine_chef.yaml
+```
+
+## Nix 
+
+```bash
+git checkout ci/master nix.dockerfile
+git checkout ci/master flake.nix
+git checkout ci/master .github/workflows/rust_build_nix.yaml
+```
+
+> **Warning: I think this one works, but I haven't set up caching for it yet so
+> I'd caution using this, as your build times will probably be really high**
+
+
+## Earth Build (Earthly)
+
+[RIP](https://earthly.dev/blog/shutting-down-earthfiles-cloud/) Earthly. Waiting
+until Earth Build is online and then perhaps I will implement this.

@@ -15,12 +15,12 @@ RUN cargo chef cook --release --target x86_64-unknown-linux-musl --recipe-path r
 
 # build our code
 COPY . .
-RUN cargo build --release --target x86_64-unknown-linux-musl --bin gha_demo
+RUN cargo build --release --target x86_64-unknown-linux-musl --bin app
 
 # runtime image
 FROM alpine AS runtime
 RUN addgroup -S myuser && adduser -S myuser -G myuser
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/gha_demo /usr/local/bin/app
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/app /usr/local/bin/app
 
 # just for convienence, but you should really consider using either docker
 # volumes (comopose) or ConfigMaps (kubernetes) for deployments.
