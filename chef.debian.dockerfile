@@ -18,18 +18,18 @@ RUN cargo chef cook --release --recipe-path recipe.json
 
 # build our code
 COPY . .
-RUN cargo build --release --bin
+RUN cargo build --release --bin gha_demo
 
 # final runtime image
 FROM debian:bookworm-slim AS runtime
 WORKDIR /app
 ENV APP_ENV=production
 RUN apt-get update -y \
-  && apt-get install -y --no-install-recommends openssl ca-certificates \
-  && apt-get autoremove -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /app/target/release/app app
+    && apt-get install -y --no-install-recommends openssl ca-certificates \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /app/target/release/gha_demo app
 
 # just for convienence, but you should really consider using either docker
 # volumes (comopose) or ConfigMaps (kubernetes) for deployments.
