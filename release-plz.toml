@@ -7,7 +7,8 @@ git_tag_enable = true
 
 # disable cargo publish
 # NOTE: enable if building a library you want to push to crates.io
-publish = false
+# Temporarily enabling to test if this prevents Cargo.toml updates
+publish = true
 
 # labels for the release pr
 pr_labels = ["release"]
