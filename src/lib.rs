@@ -1,6 +1,7 @@
 // some important fixes here
 // and again
 // @deinum - testing release-plz version bump
+// testing automatic version detection
 pub(crate) mod app;
 pub(crate) mod error;
 pub(crate) mod routes;
