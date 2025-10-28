@@ -10,7 +10,7 @@ pub enum Error {
     UnexpectedError(#[from] anyhow::Error),
     #[error("Database Error")]
     DbError(#[from] sqlx::Error),
-    #[error("Cat Not Found")]
+    #[error("Not Found")]
     NotFoundError,
 }
 

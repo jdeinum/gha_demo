@@ -18,7 +18,7 @@ pr_labels = ["release"]
 semver_check = false
 
 # we only incremement the minor version once we hit 1.x.x rather than 0.x.x
-features_always_increment_minor = false
+# features_always_increment_minor = false
 
 # enable changelog updates
 changelog_update = true
