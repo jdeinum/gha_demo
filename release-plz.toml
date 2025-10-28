@@ -1,4 +1,6 @@
 [workspace]
+# enable Cargo.toml updates
+release = true
 
 # disable GitHub releases, since cargo-dist handles this
 git_release_enable = false
