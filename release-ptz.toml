@@ -1,0 +1,36 @@
+[workspace]
+
+# disable GitHub releases, since cargo-dist handles this
+git_release_enable = false
+
+# create tag our tag for the release
+git_tag_enable = true
+
+# disable cargo publish
+# NOTE: enable if building a library you want to push to crates.io
+publish = false
+
+# labels for the release pr
+pr_labels = ["release"]
+
+# disable running cargo-semver-checks
+# NOTE: enable if building a library
+semver_check = false
+
+# we only incremement the minor version once we hit 1.x.x rather than 0.x.x
+features_always_increment_minor = false
+
+# enable changelog updates
+changelog_update = true
+
+# path of the git-cliff configuration
+changelog_config = "cliff.toml"
+
+# update dependencies with `cargo update`
+dependencies_update = true
+
+# disallow updating repositories with uncommitted changes
+allow_dirty = false
+
+# disallow packaging with uncommitted changes
+publish_allow_dirty = false
